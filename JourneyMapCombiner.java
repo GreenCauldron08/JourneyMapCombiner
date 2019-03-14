@@ -40,7 +40,7 @@ public class JourneyMapCombiner{
 		for(String imagePath:imagePaths){//the main loop
 			if(!imagePath.endsWith(".png"))
 				continue;
-			System.out.println(imagePath);//so user knows what its doing
+			System.out.println(imagePath);//so user knows what it's doing
 			ArrayList<File> comparables=new ArrayList<File>();
 			for(File f:images){
 				if(f.getPath().endsWith(imagePath)){
