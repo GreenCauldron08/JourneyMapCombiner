@@ -1,0 +1,4 @@
+JourneyMapCombiner can be used from the command line by providing 3 or more arguments: 2 (or more) source directory paths and 1 destination directory path.
+
+eg.
+"JourneyMapCombiner C:\Users\Public\MultiMC\instances\Soon\minecraft\journeymap\data\mp\AAAAAAAAUGGGGH C:\Users\Public\MultiMC\instances\Now\minecraft\journeymap\data\mp\Alpies C:\Users\Public\MultiMC\instances\Now\minecraft\journeymap\data\mp\Combined"
