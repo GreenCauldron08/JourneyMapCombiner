@@ -17,22 +17,22 @@ public class JourneyMapCombiner{
 			worlds[x]=new File(args[x]);
 			File[] subList=worlds[x].listFiles();
 			for(File subFile:subList){
-				if(subFile.isDirectory()&&subFile.getName().startsWith("DIM")){//only the folders we want
+				if(subFile.isDirectory()&&!subFile.getName().startsWith("waypoints")){//only the folders we want
 					dimensions.add(subFile);
 				}
 			}
 		}//now we have our dimension Files
-		ArrayList<String> dimensionPaths=getUniquePaths(dimensions);//get all the dimension paths
+		ArrayList<String> dimensionPaths=getUniquePaths(dimensions,null);//get all the dimension paths
 		ArrayList<File> levels=new ArrayList<File>();
 		for(File dim:dimensions){
 			levels.addAll(Arrays.asList(dim.listFiles()));//assuming there's no extra files
 		}//now we have our level Files
-		ArrayList<String> levelPaths=getUniquePaths(levels);//get all level paths
+		ArrayList<String> levelPaths=getUniquePaths(levels,dimensionPaths);//get all level paths
 		ArrayList<File> images=new ArrayList<File>();
 		for(File level:levels){
 			images.addAll(Arrays.asList(level.listFiles()));
 		}//now we have our image files
-		ArrayList<String> imagePaths=getUniquePaths(images);//get all image paths
+		ArrayList<String> imagePaths=getUniquePaths(images,dimensionPaths);//get all image paths
 		for(String levelPath:levelPaths){
 			File outDir=new File(args[args.length-1]+File.separator+levelPath);
 			outDir.mkdirs();
@@ -70,11 +70,10 @@ public class JourneyMapCombiner{
 			outFile.setLastModified(comparables.get(comparables.size()-1).lastModified());
 		}
 	}
-	public static ArrayList<String> getUniquePaths(ArrayList<File> files) throws IOException{
+	public static ArrayList<String> getUniquePaths(ArrayList<File> files, ArrayList<String> dimensionNames) throws IOException{
 		ArrayList<String> paths=new ArrayList<String>();
 		for(File f:files){
-			String path=f.getPath();
-			path=path.substring(path.indexOf("DIM"));
+			String path=GetPathName(f,dimensionNames);
 			int y;
 			for(y=0;y<paths.size();y++){
 				if(paths.get(y).equals(path))
@@ -85,4 +84,19 @@ public class JourneyMapCombiner{
 		}
 		return paths;
 	}
+    public static String GetPathName(File file, ArrayList<String> dimensionNames) throws IOException {
+        String path=file.getPath();
+
+        if (dimensionNames==null) {
+            return path.substring(path.indexOf(file.getName()));
+        }
+
+        for (String dimension:dimensionNames) {
+            if (path.contains(dimension)) {
+                return path.substring(path.indexOf(dimension));
+            }
+        }
+
+        return null;
+    }
 }
